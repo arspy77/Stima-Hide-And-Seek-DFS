@@ -1,0 +1,10 @@
+C:\Users\Ariel Razumardi\source\repos\WindowsFormsApp1\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.exe.config
+C:\Users\Ariel Razumardi\source\repos\WindowsFormsApp1\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.exe
+C:\Users\Ariel Razumardi\source\repos\WindowsFormsApp1\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.pdb
+C:\Users\Ariel Razumardi\source\repos\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\DFSHideAndSeek.csprojAssemblyReference.cache
+C:\Users\Ariel Razumardi\source\repos\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\DFSHideAndSeek.MainForm.resources
+C:\Users\Ariel Razumardi\source\repos\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.Properties.Resources.resources
+C:\Users\Ariel Razumardi\source\repos\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\DFSHideAndSeek.csproj.GenerateResource.cache
+C:\Users\Ariel Razumardi\source\repos\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\DFSHideAndSeek.csproj.CoreCompileInputs.cache
+C:\Users\Ariel Razumardi\source\repos\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.exe
+C:\Users\Ariel Razumardi\source\repos\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.pdb
