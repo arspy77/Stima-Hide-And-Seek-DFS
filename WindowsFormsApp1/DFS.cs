@@ -70,6 +70,8 @@ namespace WindowsFormsApp1
             checkedNode = new List<int>();
             pathNode = new Stack<int>();
             isFound = false;
+            if (mode < 0 || mode > 1 || X < 1 || X > n || Y < 1 || Y > n)
+                throw new CustomException("Out of range query input");
             if (mode == 0)
                 _DFSIn(Y, X);
             else

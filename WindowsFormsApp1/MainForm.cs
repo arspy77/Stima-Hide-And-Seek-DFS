@@ -18,7 +18,7 @@ namespace WindowsFormsApp1
         private RootedTree st;
         private Queue<Tuple<int, int, int>> queryList;
         private Microsoft.Msagl.Drawing.Graph graph;
-        private Microsoft.Msagl.GraphViewerGdi.GViewer viewer;
+        private Microsoft.Msagl.GraphViewerGdi.GViewer viewer = new GViewer();
 
 
         //Method
@@ -63,37 +63,32 @@ namespace WindowsFormsApp1
             return prompt.ShowDialog() == DialogResult.OK ? textBox.Text : "";
         }
 
-        private void animateGraph()
+        private void animateGraph(int startGraph,int goalGraph)
         {
             initializeGraph();
+            viewer.Graph.FindNode(startGraph.ToString()).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Yellow;
+            viewer.Graph.FindNode(goalGraph.ToString()).Attr.FillColor = Microsoft.Msagl.Drawing.Color.Red;
+            panel1.Refresh();
+            var tw = Task.Delay(1000);
+            tw.Wait();
             foreach (int el in st.checkedNode)
             {
-                graph.FindNode(el.ToString()).Attr.FillColor = Microsoft.Msagl.Drawing.Color.LightPink;
-                viewer.Graph = graph;
-                panel1.Controls.Clear();
-                panel1.Controls.Add(viewer);
-                var taskwait = Task.Delay(1000);
-                taskwait.Wait();
+                viewer.Graph.FindNode(el.ToString()).Attr.FillColor = Microsoft.Msagl.Drawing.Color.LightPink;
+                panel1.Refresh();
+                tw = Task.Delay(1000);
+                tw.Wait();
             }
             int[] path = st.pathNode.ToArray();
             for (int i = path.Length-1; i >= 0; i--)
             {
-                graph.FindNode(path[i].ToString()).Attr.FillColor = Microsoft.Msagl.Drawing.Color.RoyalBlue;
-                viewer.Graph = graph;
-                panel1.Controls.Clear();
-                panel1.Controls.Add(viewer);
-                var taskwait = Task.Delay(1000);
-                taskwait.Wait();
+                viewer.Graph.FindNode(path[i].ToString()).Attr.FillColor = Microsoft.Msagl.Drawing.Color.RoyalBlue;
             }
+            panel1.Refresh();
         }
 
         private void initializeGraph()
         {
-            //create a viewer object 
-            viewer = new Microsoft.Msagl.GraphViewerGdi.GViewer();
-            //create a graph object 
-            graph = new Microsoft.Msagl.Drawing.Graph("graph");
-            //create the graph content 
+            graph = new Graph();
             for (int i = 1; i <= st.n; ++i)
             {
                 foreach (int j in st.childNode[i])
@@ -102,8 +97,6 @@ namespace WindowsFormsApp1
             viewer.Graph = graph;
             panel1.SuspendLayout();
             viewer.Dock = System.Windows.Forms.DockStyle.Fill;
-            panel1.Controls.Clear();
-            panel1.Controls.Add(viewer);
             panel1.ResumeLayout();
         }
 
@@ -122,6 +115,7 @@ namespace WindowsFormsApp1
                     button4.Visible = true;
                     button5.Visible = true;
                     queryList = new Queue<Tuple<int, int, int>>();
+                    panel1.Controls.Add(viewer);
                     initializeGraph();
                 }
                 catch (CustomException c)
@@ -211,22 +205,35 @@ namespace WindowsFormsApp1
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Tuple<int, int, int> t = queryList.Dequeue();
-            st.Query(t.Item1, t.Item2, t.Item3);
-            MessageBox.Show("Query : " + t.Item1.ToString() + " " + t.Item2.ToString() + " " + t.Item3.ToString());
-            animateGraph();
-            if (st.pathNode.Count == 0)
+            try
             {
-                MessageBox.Show("Tidak ada jawaban untuk query tersebut.");
-            }
-            else
-            {
-                MessageBox.Show("Jawaban untuk query tersebut telah ditemukan.");
-            }
+                Tuple<int, int, int> t = queryList.Dequeue();
+                st.Query(t.Item1, t.Item2, t.Item3);
+                MessageBox.Show("Query : " + t.Item1.ToString() + " " + t.Item2.ToString() + " " + t.Item3.ToString());
+                animateGraph(t.Item3, t.Item2);
+                if (st.pathNode.Count == 0)
+                {
+                    MessageBox.Show("TIDAK\nTidak ada jawaban untuk query tersebut.");
+                }
+                else
+                {
+                    string path = "";
+                    foreach (int el in st.pathNode)
+                    {
+                        path = "->" + el.ToString() + path;
+                    }
 
-            if (queryList.Count == 0)
+                    MessageBox.Show("YA\nJawaban untuk query tersebut telah ditemukan.\nPath :  " + path.Substring(2));
+                }
+
+                if (queryList.Count == 0)
+                {
+                    button1.Visible = false;
+                }
+            }
+            catch(CustomException c)
             {
-                button1.Visible = false;
+                MessageBox.Show(c.Message);
             }
         }
     }
