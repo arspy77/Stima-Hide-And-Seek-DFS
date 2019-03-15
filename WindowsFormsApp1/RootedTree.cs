@@ -7,10 +7,10 @@ namespace WindowsFormsApp1
     class RootedTree
     {
         // Attribute
-        private List<int> parentNode;
-        private List<List<int>> childNode;
-        private int n;
-        private List<bool> passed;
+        public List<int> parentNode;
+        public List<List<int>> childNode;
+        public int n;
+        public List<bool> passed;
 
         // Method
         public RootedTree(string filename)
@@ -20,7 +20,14 @@ namespace WindowsFormsApp1
                 string line = sr.ReadLine();
                 n = Int32.Parse(line);
                 childNode = new List<List<int>>(n+1);
-                parentNode = new List<int>(n+1);
+                parentNode = new List<int>(n + 1);
+                passed = new List<bool>(n + 1);
+                for (int i = 0; i <= n; ++i)
+                {
+                    childNode.Add(new List<int> { });
+                    parentNode.Add(0);
+                    passed.Add(false);
+                }
                 for (int i = 1; i < n; i++)
                 {
                     line = sr.ReadLine();
@@ -32,50 +39,26 @@ namespace WindowsFormsApp1
                 }
             }
         }
-
-        public bool ExistCircuit()
-        {
-            passed = new List<bool>(n+1);
-            return ExistCircuitRec(1, 0);
-        }
-
-        public bool ExistCircuitRec(int index, int prevIndex)
-        {
-            bool exist = false;
-            foreach (int next in childNode[index])
-            {
-                if (passed[next] == true && next != prevIndex)
-                {
-                    exist = true;
-                }
-
-                else
-                {
-                    passed[index] = true;
-                    exist = exist || ExistCircuitRec(next, index);
-                    passed[index] = false;
-                }
-            }
-            return exist;
-        }
-
+       
+        
         public void ConvertToTree()
         {
-            passed = new List<bool>(n + 1);
             ConvertToTreeRec(1);
         }
 
         public void ConvertToTreeRec(int index)
         {
+            passed[index] = true;
             foreach (int next in childNode[index])
             {
                 if (passed[next] == true)
                 {
-                    parentNode[index] = next;
-                    childNode[index].Remove(next);
+                    throw new Exception();
                 }
                 else
                 {
+                    parentNode[next] = index;
+                    childNode[next].Remove(index);
                     ConvertToTreeRec(next);
                 }
             }

@@ -8,3 +8,17 @@ C:\Users\Ariel Razumardi\source\repos\WindowsFormsApp1\WindowsFormsApp1\obj\Debu
 C:\Users\Ariel Razumardi\source\repos\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\DFSHideAndSeek.csproj.CoreCompileInputs.cache
 C:\Users\Ariel Razumardi\source\repos\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.exe
 C:\Users\Ariel Razumardi\source\repos\WindowsFormsApp1\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.pdb
+C:\Users\Ariel Razumardi\source\repos\WindowsFormsApp1\Stima-Hide-And-Seek-DFS\WindowsFormsApp1\obj\Debug\DFSHideAndSeek.csprojAssemblyReference.cache
+C:\Users\Ariel Razumardi\source\repos\WindowsFormsApp1\Stima-Hide-And-Seek-DFS\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.MainForm.resources
+C:\Users\Ariel Razumardi\source\repos\WindowsFormsApp1\Stima-Hide-And-Seek-DFS\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.Properties.Resources.resources
+C:\Users\Ariel Razumardi\source\repos\WindowsFormsApp1\Stima-Hide-And-Seek-DFS\WindowsFormsApp1\obj\Debug\DFSHideAndSeek.csproj.GenerateResource.cache
+C:\Users\Ariel Razumardi\source\repos\WindowsFormsApp1\Stima-Hide-And-Seek-DFS\WindowsFormsApp1\obj\Debug\DFSHideAndSeek.csproj.CoreCompileInputs.cache
+C:\Users\Ariel Razumardi\source\repos\WindowsFormsApp1\Stima-Hide-And-Seek-DFS\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.exe
+C:\Users\Ariel Razumardi\source\repos\WindowsFormsApp1\Stima-Hide-And-Seek-DFS\WindowsFormsApp1\obj\Debug\WindowsFormsApp1.pdb
+C:\Users\Ariel Razumardi\source\repos\WindowsFormsApp1\Stima-Hide-And-Seek-DFS\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.exe.config
+C:\Users\Ariel Razumardi\source\repos\WindowsFormsApp1\Stima-Hide-And-Seek-DFS\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.exe
+C:\Users\Ariel Razumardi\source\repos\WindowsFormsApp1\Stima-Hide-And-Seek-DFS\WindowsFormsApp1\bin\Debug\WindowsFormsApp1.pdb
+C:\Users\Ariel Razumardi\source\repos\WindowsFormsApp1\Stima-Hide-And-Seek-DFS\WindowsFormsApp1\bin\Debug\Microsoft.Msagl.dll
+C:\Users\Ariel Razumardi\source\repos\WindowsFormsApp1\Stima-Hide-And-Seek-DFS\WindowsFormsApp1\bin\Debug\Microsoft.Msagl.Drawing.dll
+C:\Users\Ariel Razumardi\source\repos\WindowsFormsApp1\Stima-Hide-And-Seek-DFS\WindowsFormsApp1\bin\Debug\Microsoft.Msagl.GraphViewerGdi.dll
+C:\Users\Ariel Razumardi\source\repos\WindowsFormsApp1\Stima-Hide-And-Seek-DFS\WindowsFormsApp1\obj\Debug\DFSHideAndSeek.csproj.CopyComplete
