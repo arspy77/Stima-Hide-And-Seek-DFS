@@ -2,167 +2,113 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace HideAndSeek {
-    class CustomException : Exception {
-        public CustomException(String _msg) : base(String.Format(_msg)) {
-
+namespace WindowsFormsApp1
+{
+    internal class CustomException : Exception
+    {
+        public CustomException(string _msg) : base(string.Format(_msg))
+        {
         }
     }
 
-    class RootedTree {
-        // Attribute
-        private List<int> parentNode;
-        private List<List<int>> childNode;
-        private int n;
-        private List<int> spanningTree;
-        // Dipake buat DFS
-        List<List<int>> pathClosure; //Set of currPath
+    internal class RootedTree
+    {
+        private const int _rootNode = 1;
+        public int n { get; private set; } 
+        public List<List<int>> childNode { get; private set; } 
+        public List<int> parentNode { get; private set; } 
+        private List<bool> _visited;
+        public List<int> checkedNode { get; private set; } 
+        public Stack<int> pathNode { get; private set; } 
+        public bool isFound { get; private set; } 
+
 
         // Method 
         // ctor - Generate tree sekaligus cek siklis atau tak
-        public RootedTree(string filename) {
-            using (StreamReader sr = new StreamReader(filename)) {
-                string line = sr.ReadLine();
-                n = Int32.Parse(line);
+        public RootedTree(string filename)
+        {
+            using (var sr = new StreamReader(filename))
+            {
+                var line = sr.ReadLine();
+                n = int.Parse(line);
                 childNode = new List<List<int>>();
-                for (int i = 0; i <= n; i++) {
-                    childNode.Add(new List<int>());
-                }
+                for (int i = 0; i <= n; i++) childNode.Add(new List<int>());
                 parentNode = new List<int>();
-                for (int i = 0; i <= n; i++) {
-                    parentNode.Add(0);
-                }
-                spanningTree = new List<int>();
-                for (int i = 0; i <= n; i++) {
-                    spanningTree.Add(i);
-                }
+                for (int i = 0; i <= n; i++) parentNode.Add(0);
+                _visited = new List<bool>();
+                for (int i = 0; i <= n; i++) _visited.Add(false);
 
-                for (int i = 1; i <= n - 1; i++) {
+                for (int i = 0; i < n-1; i++)
+                {
                     line = sr.ReadLine();
-                    string[] splitLine = line.Split(' ');
-                    int a = Int32.Parse(splitLine[0]);
-                    int b = Int32.Parse(splitLine[1]);
-                    if (spanningTree[a] == spanningTree[b]) { //Cek Siklik, cek ae
-                        throw new CustomException("Error : input generated a graph (siklik) at pass-" + i);
-                    } else {
-                        childNode[a].Add(b);
-                        parentNode[b] = a;
-                        int secSpanTree = spanningTree[b];
-                        for (int j = 1; j <= n; j++) {
-                            if (spanningTree[j] == secSpanTree) {
-                                spanningTree[j] = spanningTree[a];
-                            }
-                        }
-                    }
+                    var splitLine = line.Split(' ');
+                    int a = int.Parse(splitLine[0]);
+                    int b = int.Parse(splitLine[1]);
+                    childNode[a].Add(b);
+                    childNode[b].Add(a);
                 }
+            }
+            _makeRootedTree(_rootNode);
+        }
+
+        private void _makeRootedTree(int idx)
+        {
+            if (_visited[idx]) throw new CustomException("Input generated graph with a cycle");
+            _visited[idx] = true;
+            foreach (int next in childNode[idx])
+            {
+                parentNode[next] = idx;
+                childNode[next].Remove(idx);
+                _makeRootedTree(next);
             }
         }
 
-        public List<int> query(String[] inp) {
-            //query mereturn path yang dapat dilalui dengan melewati rumah-X, 
-            //kalo ngeluarin path kosong berarti ga ketemu rumah-X
-            int mode = Int32.Parse(inp[0]);
-            int X = Int32.Parse(inp[1]);
-            int Y = Int32.Parse(inp[2]);
-            pathClosure = new List<List<int>>(); //garbage collector bakal dealoc pathClosure lama sebelum new lagi, cmiw
-            if (mode == 0) {
-                DFSIn(Y, new List<int>());
-            } else { //mode == 1
-                DFSOut(Y, new List<int>());
-            }
-            //printPathClosure(); //uncomment for debug, bisa pake pathClosure kalo mau dibikin animasi ;)
-            foreach (List<int> path in pathClosure) {
-                if (path.Contains(X)) {
-                    return path;
-                }
-            }
-            return new List<int>();
+        public void Query(int mode, int X, int Y)
+        {
+            checkedNode = new List<int>();
+            pathNode = new Stack<int>();
+            isFound = false;
+            if (mode == 0)
+                _DFSIn(Y, X);
+            else
+                _DFSOut(Y, X);
         }
-        
-        //NOTE : Walaupun banyak newnya tapi kalo udah keluar fungsi, garbage collectornya C# bakal langsung dealok objeknya
-        private void DFSIn(int currVer, List<int> currPath) {
-            currPath.Add(currVer);
-            //Basis
-            if (currVer == 1) {
-                pathClosure.Add(new List<int>(currPath));
-            //Rekuren
-            } else {
-                DFSIn(parentNode[currVer], new List<int>(currPath));
+
+        private void _DFSIn(int curr, int target)
+        {
+            checkedNode.Add(curr);
+            pathNode.Push(curr);
+            if (curr == target) 
+            {
+                isFound = true;
+                return;
+            }
+
+            if (curr != _rootNode)
+                _DFSIn(parentNode[curr], target);
+            if (!isFound)
+            {
+                pathNode.Pop();
             }
         }
 
-        //NOTE : Walaupun banyak newnya tapi kalo udah keluar fungsi, garbage collectornya C# bakal langsung dealok objeknya
-        private void DFSOut(int currVer, List<int> currPath) {
-            currPath.Add(currVer);
-            //Basis
-            if (childNode[currVer].Count == 0) {
-                pathClosure.Add(new List<int>(currPath));
-            //Rekurens
-            } else {
-                foreach (int i in childNode[currVer]) {
-                    DFSOut(i, new List<int>(currPath));
-                }
+        private void _DFSOut(int curr, int target)
+        {
+            checkedNode.Add(curr);
+            pathNode.Push(curr);
+            if (curr == target) 
+            {
+                isFound = true;
+                return;
             }
-        }
-
-        public void printNode() {
-            Console.WriteLine("List Parent :");
-            bool skip = true; //ngeskip idx ke-0 
-            foreach (int parent in parentNode) {
-                if (!skip) {
-                    Console.Write(parent + " | ");
-                } else {
-                    skip = !skip;
-                }
+            foreach (int next in childNode[curr])
+            {
+                _DFSOut(next, target);
             }
-            Console.WriteLine();
-            Console.WriteLine("List Children :");
-            foreach (List<int> children in childNode) {
-                foreach (int child in children) {
-                    Console.Write(child + " ");
-                }
-                Console.Write("| ");
+            if (!isFound)
+            {
+                pathNode.Pop();
             }
-            Console.WriteLine();
-        }
-
-        public void printPathClosure() {
-            foreach (List<int> path in  pathClosure) {
-                Console.Write("[");
-                foreach (int vertex in path) {
-                    Console.Write(vertex + ", ");
-                }
-                Console.WriteLine("]");
-            }
-        }
-    }
-
-    class ProgramUtama {
-        static void Main(String[] args) {
-            try {
-                List<int> path;
-                RootedTree Tree = new RootedTree("test.txt");
-                Tree.printNode();
-                String[] inp;
-                inp = Console.ReadLine().Split(' ');
-                while (inp.Length != 1) {
-                    path = Tree.query(inp);
-                    if (path.Count != 0) {
-                        Console.WriteLine("YA");
-                        Console.WriteLine("Jalur yang ditempuh :");
-                        foreach (int i in path) {
-                            Console.Write(i + " ");
-                        }
-                        Console.WriteLine();
-                    } else {
-                        Console.WriteLine("TIDAK");
-                    }
-                    inp = Console.ReadLine().Split(' ');
-                }
-            } catch (CustomException ex) {
-                Console.WriteLine(ex.Message);
-            }
-            Console.ReadLine();
         }
     }
 }

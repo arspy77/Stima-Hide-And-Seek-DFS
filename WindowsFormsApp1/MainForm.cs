@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 using System.Collections.Generic;
+using System.IO;
 
 namespace WindowsFormsApp1
 {
@@ -10,6 +11,8 @@ namespace WindowsFormsApp1
         // Attribute
         private RootedTree st;
         private bool treeRead = false;
+        private List<Tuple<int, int, int>> queryList;
+        private int nQuery;
 
         //Method
         public MainForm()
@@ -17,18 +20,6 @@ namespace WindowsFormsApp1
             InitializeComponent();
         }
 
-        private void MainForm_Load(object sender, EventArgs e)
-        {
-            Button b1 = new Button { Text = "Read Graph From File", Location = new Point(10, 10), Size = new Size(150, 20) };
-            b1.Click += new EventHandler(Button1_Click);
-            Controls.Add(b1);
-            Button b2 = new Button { Text = "Read Query Manual", Location = new Point(100, 100), Size = new Size(150, 20) };
-            b2.Click += new EventHandler(Button2_Click);
-            Controls.Add(b2);
-            Button b3 = new Button { Text = "Read Query From File", Location = new Point(200, 200), Size = new Size(150, 20) };
-            b3.Click += new EventHandler(Button3_Click);
-            Controls.Add(b3);
-        }
 
         private static string GetFilename()
         {
@@ -44,52 +35,6 @@ namespace WindowsFormsApp1
             }
         }
 
-        private void Button1_Click(object sender, EventArgs e)
-        {
-            string filename = GetFilename();
-            if (filename != "")
-            {
-                st = new RootedTree(filename);
-                st.ConvertToTree();
-                treeRead = true;
-            }
-        }
-
-        private void Button2_Click(object sender, EventArgs e)
-        {
-            if (treeRead)
-            {
-                try
-                {
-                    string query = GetQueryDialogue();
-                    string[] splitQuery = query.Split(' ');
-                    int type = Int32.Parse(splitQuery[0]);
-                    int x = Int32.Parse(splitQuery[1]);
-                    int y = Int32.Parse(splitQuery[2]);
-                }
-                catch (Exception)
-                {
-                    MessageBox.Show("Query Format Error");
-                }
-            }
-            else
-            {
-                MessageBox.Show("Graph file must be read first.");
-            }
-        }
-
-        private void Button3_Click(object sender, EventArgs e)
-        {
-            if (treeRead)
-            {
-                string filename = GetFilename();
-
-            }
-            else
-            {
-                MessageBox.Show("Graph file must be read first.");
-            }
-        }
 
         public static string GetQueryDialogue()
         {
@@ -135,6 +80,98 @@ namespace WindowsFormsApp1
             form.ResumeLayout();
             //show the form 
             form.ShowDialog();
+        }
+
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            string filename = GetFilename();
+            if (filename != "")
+            {
+                st = new RootedTree(filename);
+                treeRead = true;
+                button1.Visible = true;
+                button2.Visible = false;
+                button3.Visible = true;
+                button4.Visible = true;
+                button5.Visible = true;
+            }
+        }
+
+        private void button3_Click_1(object sender, EventArgs e)
+        {
+            if (treeRead)
+            {
+                try
+                {
+                    string query = GetQueryDialogue();
+                    string[] splitQuery = query.Split(' ');
+                    int mode = Int32.Parse(splitQuery[0]);
+                    int x = Int32.Parse(splitQuery[1]);
+                    int y = Int32.Parse(splitQuery[2]);
+                    st.Query(mode, x, y);
+                    string s1 = "", s2 = "";
+                    foreach (int el in st.checkedNode)
+                    {
+                        s1 += el.ToString() + " ";
+                    }
+
+                    foreach (int el in st.pathNode)
+                    {
+                        s2 = " " + el.ToString() + s2;
+                    }
+
+                    MessageBox.Show("checked : " + s1);
+                    MessageBox.Show("path : " + s2);
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Query Format Error");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Graph file must be read first.");
+            }
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            if (treeRead)
+            {
+                string filename = GetFilename();
+                using (StreamReader sr = new StreamReader(filename))
+                {
+                    string line = sr.ReadLine();
+                    nQuery = Int32.Parse(line);
+                    queryList = new List<Tuple<int, int, int>>();
+                    for (int i = 0; i < nQuery; i++)
+                    {
+                        line = sr.ReadLine();
+                        string[] splitLine = line.Split(' ');
+                        Tuple<int, int, int> t = new Tuple<int, int, int>(Int32.Parse(splitLine[0]), Int32.Parse(splitLine[0]), Int32.Parse((splitLine[2])));
+                        queryList.Add(t);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Graph file must be read first.");
+            }
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            string filename = GetFilename();
+            if (filename != "")
+            {
+                st = new RootedTree(filename);
+                treeRead = true;
+            }
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }
