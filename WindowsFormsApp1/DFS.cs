@@ -49,6 +49,8 @@ namespace WindowsFormsApp1
                 }
             }
             _makeRootedTree(_rootNode);
+            for (int i = 1; i <= n; ++i)
+                if (!_visited[i]) throw new CustomException("Input generated graph with a cycle");
         }
 
         private void _makeRootedTree(int idx)
@@ -104,6 +106,7 @@ namespace WindowsFormsApp1
             foreach (int next in childNode[curr])
             {
                 _DFSOut(next, target);
+                if (isFound) return;
             }
             if (!isFound)
             {

@@ -96,8 +96,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="HNS.png" />
     <Content Include="test.cpp" />
     <Content Include="TextFile1.txt" />
+    <Content Include="TextFile2.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
