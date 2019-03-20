@@ -349,6 +349,7 @@ namespace WindowsFormsApp1
                     }
                     executeQueryButton.Visible = false;
                     executeAllQueryAndSaveToFileButton.Visible = false;
+                    MessageBox.Show("Output berhasil disimpan di " + filename);
                 }
             }
         }
